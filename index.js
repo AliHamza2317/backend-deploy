@@ -13,7 +13,6 @@
 import express from ('express');
 // import PrismaClient from ('@prisma/client');
 const bodyParser = require('body-parser');
-require('dotenv').config();
 import cors from require('cors');
 // const prisma = new PrismaClient();
 const app = express();
@@ -22,9 +21,9 @@ app.use(cors());
 // Helper function for error handling
 
 
-app.get('/', async (request, reply) => {
-  return { message: 'Hello, worldd!' };
-});
+app.use('/', (req, res) => {
+    
+    res.send({message: 'Hello World'})})
 // Routes for `Pump`
 // app.post('/pumps', async (req, res) => {
 //   try {
