@@ -1,16 +1,13 @@
-import express from "express"
+import express from "express";
 
-const app = express()
-const port = 9000
+const app = express();
+
 app.get('/', (req, res) => {
-    
-    res.send({message: 'Hello World'})})
+    res.send({ message: 'Hello World' });
+});
 
-    app.get('/hello', (req, res) => {
-    
-        res.send({message: 'Hello World'})})
-    
-    
-app.listen(9000, () => {
-    console.log(`Server is running on port ${port}`)
-    })
+app.get('/hello', (req, res) => {
+    res.send({ message: 'Hello from /hello route' });
+});
+
+export default app;
