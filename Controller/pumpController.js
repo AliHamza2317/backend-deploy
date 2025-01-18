@@ -1,6 +1,9 @@
 
-const pump = require('../Models/pumpSchema');
-
+const Pump = require('../Models/pumpSchema');
+const Amount = require('../Models/amountSchmea');
+const Credit = require('../Models/creditSchmea');
+const Debit = require('../Models/debitSchema');
+const Udhar = require('../Models/debitSchema');
 
 const getpump = async (req, res) => {
 
@@ -67,10 +70,120 @@ const second = (req, res) => {
     res.send({ message: 'Hello from /second route' });
 }
 
+
+
+const amount = async (req, res) => {
+    try {
+      const amount = new Amount({
+        name: req.body.name,
+        Date: req.body.date,
+        totalsale: req.body.totalsale,
+        expenditure: req.body.expenditure,
+      });
+  
+      const savedAmount = await amount.save();
+      res.status(201).json(savedAmount);
+    } catch (error) {
+      console.error('Error creating amount:', error);
+      handleError(res, error);
+    }
+  }
+
+  
+ const getamount= async (req, res) => {
+    try {
+      const amounts = await Amount.find();
+      res.json(amounts);
+    } catch (error) {
+      console.error('Error fetching amounts:', error);
+      handleError(res, error);
+    }
+  }
+
+  
+
+  const udhar =  async (req, res) => {
+    try {
+      const udhar = new Udhar(req.body);
+      const savedUdhar = await udhar.save();
+      res.status(201).json(savedUdhar);
+    } catch (error) {
+      console.error('Error creating udhar:', error);
+      handleError(res, error);
+    }
+  }
+
+  
+const getudhar = async (req, res) => {
+    try {
+      const udhars = await Udhar.find();
+      res.json(udhars);
+    } catch (error) {
+      console.error('Error fetching udhars:', error);
+      handleError(res, error);
+    }
+  }
+
+  
+
+ const credit = async (req, res) => {
+    try {
+      const credit = new Credit(req.body);
+      const savedCredit = await credit.save();
+      res.status(201).json(savedCredit);
+    } catch (error) {
+      console.error('Error creating credit:', error);
+      handleError(res, error);
+    }
+  }
+
+  
+  const getcredit =  async (req, res) => {
+    try {
+      const credits = await Credit.find();
+      res.json(credits);
+    } catch (error) {
+      console.error('Error fetching credits:', error);
+      handleError(res, error);
+    }
+  }
+
+  
+  const debit =  async (req, res) => {
+    try {
+      const debit = new Debit(req.body);
+      const savedDebit = await debit.save();
+      res.status(201).json(savedDebit);
+    } catch (error) {
+      console.error('Error creating debit:', error);
+      handleError(res, error);
+    }
+  }
+
+  
+  const getdebit =  async (req, res) => {
+    try {
+      const debits = await Debit.find();
+      res.json(debits);
+    } catch (error) {
+      console.error('Error fetching debits:', error);
+      handleError(res, error);
+    }
+  }
+  
 module.exports={
 
     addpump,
+    getpump,
     second,
-    getpump
+    amount,
+    getamount,
+    udhar,
+    getudhar,
+    credit,
+    getcredit,
+    debit,
+    getdebit
+
     
 }
