@@ -1,10 +1,14 @@
 const express= require("express");
 const bodyParser = require('body-parser');
-const app = express();
 const cors = require("cors")
+const app = express();
 app.use(bodyParser.json())
 const uRoutes = require("./Routes/pupmRoutes");
-app.use(cors())
+app.use(cors({
+    origin: 'https://pump-hicg.vercel.app', // Allow requests only from your frontend
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+  }));
 app.use(express.json())
 
 
