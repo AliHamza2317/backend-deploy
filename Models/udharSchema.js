@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 // Pump Schema
 const udharSchema=mongoose.Schema({
-    pumpName: { type: String },
+  pumpName: { type: String },
   Date: { type: Date },
-  Name: { type: String, required: true },
-  Amount: { type: Number, required: true },
-  Description: { type: String, required: true }
+  Name: { type: String},
+  Amount: { type: Number},
+  Description: { type: String }
 }, { timestamps: true });
 
 

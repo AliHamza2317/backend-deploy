@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const amountSchema=mongoose.Schema({
     name: { type: String },
     Date: { type: Date },
-    totalsale: { type: Number, required: true },
-    expenditure: { type: Number, required: true }
+    totalsale: { type: Number},
+    expenditure: { type: Number}
   }, { timestamps: true });
 
 

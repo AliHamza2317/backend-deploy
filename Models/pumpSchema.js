@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 // Pump Schema
 const PumpSchema=mongoose.Schema({
-  name: { type: String, required: true }, // Salarwala, ChakJhumra, Balair
+  name: { type: String}, // Salarwala, ChakJhumra, Balair
   petrolDate: { type: Date },
   petrolDelivery: { type: Number },
   petrolSale: { type: Number },

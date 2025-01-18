@@ -4,9 +4,9 @@ const mongoose = require('mongoose');
 const creditSchema=mongoose.Schema({
     DepositDate: { type: Date },
     SaleDate: { type: Date },
-    Name: { type: String, required: true },
-    Amount: { type: Number, required: true },
-    site: { type: Number, required: true }
+    Name: { type: String},
+    Amount: { type: Number },
+    site: { type: Number}
   }, { timestamps: true });
   
 

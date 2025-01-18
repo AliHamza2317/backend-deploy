@@ -3,7 +3,7 @@ const Pump = require('../Models/pumpSchema');
 const Amount = require('../Models/amountSchmea');
 const Credit = require('../Models/creditSchmea');
 const Debit = require('../Models/debitSchema');
-const Udhar = require('../Models/debitSchema');
+const Udhar = require('../Models/udharSchema');
 
 const getpump = async (req, res) => {
 
