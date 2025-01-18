@@ -1,13 +1,15 @@
-import express from "express";
+const express= require("express");
 
 const app = express();
+const cors = require("cors")
+// app.use(bodyParser.json())
+const uRoutes = require("./Routes/pupmRoutes");
+app.use(cors())
+app.use(express.json())
 
-app.get('/', (req, res) => {
-    res.send({ message: 'Hello World' });
-});
 
-app.get('/hello', (req, res) => {
-    res.send({ message: 'Hello from /hello route' });
-});
+app.listen(process.env.PORT || 3001,()=>{
+    console.log(`App listening on port ${process.env.PORT}`)
+})
 
-export default app;
+app.use("/get",uRoutes); 
