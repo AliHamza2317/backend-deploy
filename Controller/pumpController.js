@@ -114,15 +114,27 @@ const amount = async (req, res) => {
   }
 
   
-const getudhar = async (req, res) => {
+  const getudhar = async (req, res) => {
     try {
+      // Fetch all records from the 'udhars' collection
       const udhars = await Udhar.find();
-      res.json(udhars);
+      
+      // Log the fetched data for debugging
+    //   console.log('Fetched udhars:', udhars);
+  
+      // Send all data as the response
+      res.status(200).json(udhars);
     } catch (error) {
       console.error('Error fetching udhars:', error);
-      handleError(res, error);
+  
+      // Send error response
+      res.status(500).json({
+        message: 'Failed to fetch udhars',
+        error: error.message,
+      });
     }
-  }
+  };
+  
 
   
 
