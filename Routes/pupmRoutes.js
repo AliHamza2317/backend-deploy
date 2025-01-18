@@ -1,10 +1,10 @@
-const { second, first } = require("../Controller/pumpController");
+const { addpump, getpump } = require("../Controller/pumpController");
 
 const userRouter=require("express").Router();
 
 
-userRouter.get('/first',first)
-userRouter.get('/second',second)
+userRouter.get('/add',addpump)
+userRouter.get('/get',getpump)
 
 module.exports=userRouter;
 
