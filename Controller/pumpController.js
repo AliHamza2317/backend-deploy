@@ -41,29 +41,105 @@ const getpump = async (req, res) => {
 }
 
 
-const addpump = async (req, res) => {
+// const addpump = async (req, res) => {
 
-    try {
-        const pump = new Pump({
-          name: req.body.name,
-          petrolDate: req.body.petrolDate ? new Date(req.body.petrolDate) : null,
-          petrolDelivery: req.body.petrolDelivery || 0,
-          petrolSale: req.body.petrolSale || 0,
-          dieselDate: req.body.dieselDate ? new Date(req.body.dieselDate) : null,
-          dieselDelivery: req.body.dieselDelivery || 0,
-          dieselSale: req.body.dieselSale || 0,
-          mobileOilDate: req.body.mobileOilDate ? new Date(req.body.mobileOilDate) : null,
-          mobileOilDelivery: req.body.mobileOilDelivery || 0,
-          mobileOilSale: req.body.mobileOilSale || 0,
-        });
+//     try {
+//         const pump = new Pump({
+//           name: req.body.name,
+//           petrolDate: req.body.petrolDate ? new Date(req.body.petrolDate) : null,
+//           petrolDelivery: req.body.petrolDelivery || 0,
+//           petrolSale: req.body.petrolSale || 0,
+//           dieselDate: req.body.dieselDate ? new Date(req.body.dieselDate) : null,
+//           dieselDelivery: req.body.dieselDelivery || 0,
+//           dieselSale: req.body.dieselSale || 0,
+//           mobileOilDate: req.body.mobileOilDate ? new Date(req.body.mobileOilDate) : null,
+//           mobileOilDelivery: req.body.mobileOilDelivery || 0,
+//           mobileOilSale: req.body.mobileOilSale || 0,
+//         });
     
-        const savedPump = await pump.save();
-        res.status(201).json(savedPump);
-      } catch (error) {
-        console.error('Error creating pump:', error);
-        res.status(500).json({ error: error.message });
+//         const savedPump = await pump.save();
+//         res.status(201).json(savedPump);
+//       } catch (error) {
+//         console.error('Error creating pump:', error);
+//         res.status(500).json({ error: error.message });
+//       }
+// }
+
+
+const addpump = async (req, res) => {
+  try {
+    const { 
+      name, 
+      petrolDate, petrolDelivery, petrolSale, 
+      dieselDate, dieselDelivery, dieselSale, 
+      mobileOilDate, mobileOilDelivery, mobileOilSale 
+    } = req.body;
+  
+    // Fetch the last entry of the pump to get the previous stock values
+    const lastPump = await Pump.findOne({ name }).sort({ createdAt: -1 });
+  
+    // Calculate the initial balances
+    let petrolBalance = (petrolDelivery - petrolSale) || 0;
+    let dieselBalance = (dieselDelivery - dieselSale) || 0;
+    let mobileOilBalance = (mobileOilDelivery - mobileOilSale) || 0;
+  
+    // If this is not the first entry, add the previous stock value to the balance
+    if (lastPump) {
+      petrolBalance += lastPump.petrolStockOriginal || 0;
+      dieselBalance += lastPump.dieselStockOriginal || 0;
+      mobileOilBalance += lastPump.mobileOilStockOriginal || 0;
+    }
+  
+    // Ensure the balances are numbers and not NaN
+    petrolBalance = isNaN(petrolBalance) ? 0 : petrolBalance;
+    dieselBalance = isNaN(dieselBalance) ? 0 : dieselBalance;
+    mobileOilBalance = isNaN(mobileOilBalance) ? 0 : mobileOilBalance;
+  
+    // Create new pump instance
+    const pump = new Pump({
+      name,
+      petrolDate: petrolDate ? new Date(petrolDate) : null,
+      petrolDelivery: petrolDelivery || 0,
+      petrolSale: petrolSale || 0,
+       // Set initial stock original for petrol
+  
+      dieselDate: dieselDate ? new Date(dieselDate) : null,
+      dieselDelivery: dieselDelivery || 0,
+      dieselSale: dieselSale || 0,
+     // Set initial stock original for diesel
+  
+      mobileOilDate: mobileOilDate ? new Date(mobileOilDate) : null,
+      mobileOilDelivery: mobileOilDelivery || 0,
+      mobileOilSale: mobileOilSale || 0,
+      // Set initial stock original for mobile oil
+    });
+  
+    // Save the pump data
+    const savedPump = await pump.save();
+   
+    // Add balance to stockOriginal after 1 minute
+    setTimeout(async () => {
+      const updatedPump = await Pump.findById(savedPump._id);
+
+      if (updatedPump) {
+        // Update stockOriginal for each type of fuel
+        updatedPump.petrolStockOriginal += petrolBalance;
+        updatedPump.dieselStockOriginal += dieselBalance;
+        updatedPump.mobileOilStockOriginal += mobileOilBalance;
+
+        await updatedPump.save(); // Save the updated pump
+
+       
       }
-}
+    }, 86400000); // 1 minute in milliseconds
+
+    res.status(201).json(savedPump);
+  } catch (error) {
+    console.error('Error creating pump:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 const second = (req, res) => {
 
