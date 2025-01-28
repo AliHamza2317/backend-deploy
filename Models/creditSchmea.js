@@ -6,7 +6,7 @@ const creditSchema=mongoose.Schema({
     SaleDate: { type: Date },
     Name: { type: String},
     Amount: { type: Number },
-    site: { type: Number}
+    site: { type: String}
   }, { timestamps: true });
   
 

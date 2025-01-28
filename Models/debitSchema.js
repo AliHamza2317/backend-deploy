@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const debitSchema=mongoose.Schema({
     Date: { type: Date },
     CompanyName: { type: String },
-    Site: { type: Number},
+    Site: { type: String},
     Amount: { type: Number }
   }, { timestamps: true });
 
